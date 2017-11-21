@@ -22,7 +22,6 @@ const actions = {
 const mutations = {
   [types.TOGGLE_SIDEBAR] (state) {
     state.sidebarOpen = !state.sidebarOpen
-    state.searchOpen = false
   }
 }
 

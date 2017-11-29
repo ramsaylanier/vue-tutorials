@@ -1,0 +1,37 @@
+service: thumbnail-creator
+
+custom:
+  bucket: thumbnail-creator-tutorial
+  uploadBucket: thumbnail-creator-tutorial-uploads
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+resources:
+  Resources:
+    S3Bucket: 
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.uploadBucket}
+    WebAppS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucket}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html
+    WebAppS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebAppS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource: arn:aws:s3:::${self:custom.bucket}/*

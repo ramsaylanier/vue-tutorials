@@ -24,15 +24,10 @@ export const s3UploadBucket = new S3({
 export const uploadFiles = (files) => {
   return Promise.all(
     map(files, file => {
-      console.log(file)
       return s3UploadBucket.putObject({
         Key: file.name,
-        Body: file,
-        Tagging: 'test=test'
-      }).promise().then(r => {
-        console.log(r)
-        return r
-      })
+        Body: file
+      }).promise()
     })
   )
 }

@@ -2,18 +2,27 @@ service: thumbnail-creator
 
 custom:
   bucket: thumbnail-creator-tutorial
-  uploadBucket: thumbnail-creator-tutorial-uploads
+  uploadBucket: ${self:custom.bucket}-uploads
+  thumbnailBucket: ${self:custom.bucket}-thumbnails
 
 provider:
   name: aws
   runtime: nodejs6.10
 
+functions:
+  transform:
+    handler: handlers/transform.transform
+    events:
+      - s3: 
+          bucket: ${self:custom.uploadBucket}
+          event: s3:ObjectCreated:*
+
 resources:
   Resources:
-    S3Bucket: 
+    ThumbnailsS3Bucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.uploadBucket}
+        BucketName: ${self:custom.thumbnailBucket}
     WebAppS3Bucket:
       Type: AWS::S3::Bucket
       Properties:
@@ -35,3 +44,11 @@ resources:
               Action:
               - s3:GetObject
               Resource: arn:aws:s3:::${self:custom.bucket}/*
+
+package: 
+  exclude:
+    - client/**
+    - sharp/**
+    - package.json
+    - .serverless
+    - serverless.yml

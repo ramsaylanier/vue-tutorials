@@ -21,7 +21,7 @@ export const s3UploadBucket = new S3({
   }
 })
 
-export const uploadFiles = (files) => {
+export const uploadFiles = files => {
   return Promise.all(
     map(files, file => {
       return s3UploadBucket.putObject({
@@ -30,4 +30,8 @@ export const uploadFiles = (files) => {
       }).promise()
     })
   )
+}
+
+export const getUpload = key => {
+  console.log(key)
 }

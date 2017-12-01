@@ -1,0 +1,19 @@
+{
+  "name": "thumbnail-creator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:transform": "docker run -v \"$PWD\":/var/task lambci/lambda:nodejs6.10 handlers/transform.transform \"$(cat handlers/test.json)\"",
+    "extract:sharp": "tar -xzvf ./sharp/tarballs/sharp-0.18.4-aws-lambda-linux-x64-node-6.10.1.tar.gz -C ./",
+    "build:sharp": "docker build -t serverless-sharp-image ./sharp && docker run -v \"$PWD/sharp\":/var/task serverless-sharp-image && npm run extract:sharp",
+    "deploy": "sls deploy -v"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sharp": "^0.18.4"
+  }
+}

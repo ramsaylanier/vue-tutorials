@@ -1,3 +1,4 @@
-/thumbnail-creator/client/config/development.json
-/thumbnail-creator/client/config/production.json
+**/config/development.json
+**/config/production.json
 node_modules
+**/config/client.json

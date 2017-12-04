@@ -92,7 +92,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/thumbnail-creator/dev/1512071712520-2017-11-30T19:55:12.520Z/thumbnail-creator.zip"
+          "S3Key": "serverless/thumbnail-creator/dev/1512413841299-2017-12-04T18:57:21.299Z/thumbnail-creator.zip"
         },
         "FunctionName": "thumbnail-creator-dev-transform",
         "Handler": "handlers/transform.transform",
@@ -111,14 +111,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "TransformLambdaVersionCFW4ltiSFSj5UVOu8xOtQ6f2nRudWKpIBTrEr9jkCww": {
+    "TransformLambdaVersionO5l5pRgHkfE8FJPYwZUrEbeJFv62nbsChbdU4KhBNU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "TransformLambdaFunction"
         },
-        "CodeSha256": "CFW4ltiSFSj5UVOu8xOtQ6f2nRudWKpIBTrEr9jkCww="
+        "CodeSha256": "O5l5pR/gHkfE8FJPYwZUrEbeJFv62nbsChbdU4KhBNU="
       }
     },
     "S3BucketThumbnailcreatortutorialuploads": {
@@ -212,7 +212,7 @@
     "TransformLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "TransformLambdaVersionCFW4ltiSFSj5UVOu8xOtQ6f2nRudWKpIBTrEr9jkCww"
+        "Ref": "TransformLambdaVersionO5l5pRgHkfE8FJPYwZUrEbeJFv62nbsChbdU4KhBNU"
       }
     }
   }

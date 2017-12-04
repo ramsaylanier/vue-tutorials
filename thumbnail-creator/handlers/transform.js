@@ -11,6 +11,11 @@ AWS.config.update({
 
 AWS.config.setPromisesDependency(Promise)
 
+const getFileExtension = filename => {
+  var ext = /^.+\.([^.]+)$/.exec(filename);
+  return ext == null ? "" : ext[1];
+}
+
 const s3UploadBucket = new AWS.S3({
   apiVersion: '2006-03-01',
   params: {
@@ -31,21 +36,21 @@ module.exports.transform = (event, context, callback) => {
   const {key} = event.Records[0].s3.object
 
   // if you put spaces in your filename, the event Key replaces them with '+'. We need
-  // to undo that before getting the object.
+  // to undo that before getting the object. Then we remove the exntesion from the key.
   const sanitizedKey = key.replace(/\+/g, ' ')
-
+  const keyWithoutExtension = sanitizedKey.replace(/.[^.]+$/, '')
 
   s3UploadBucket.getObject({Key: sanitizedKey}).promise().then(r => {
     transforms.map(t => {
       sharp(r.Body)
         .resize(t, t)
         .max()
-        .embed()
+        .toFormat('jpeg')
         .toBuffer()
         .then( data => {
           s3ThumbnailBucket.putObject({
             Body: data,
-            Key: `${t}-thumbnail-${sanitizedKey}`
+            Key: `${keyWithoutExtension}-${t}.jpg`
           }).promise().then( res => {
             console.log(res)
           })

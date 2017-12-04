@@ -52,3 +52,5 @@ package:
     - package.json
     - .serverless
     - serverless.yml
+  include:
+    - client/config/production.json

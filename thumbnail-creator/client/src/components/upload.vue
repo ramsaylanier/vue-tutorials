@@ -2,7 +2,7 @@
   <div>
     <router-link :to="{path: '/'}">Back</router-link>
     <ul :class="$style.list">
-    <li :class="$style.item" v-for="thumbnail in thumbnails">
+    <li :class="$style.item" v-for="thumbnail in thumbnails" :key="thumbnail.key">
       <img :src="`${thumbnailBucketURL}/${thumbnail.Key}`"/>
     </li>
   </ul>
@@ -22,7 +22,9 @@ export default {
     }
   },
   mounted () {
+    // get the key from the router param and remove the file extension
     const key = this.$route.params.key.replace(/.[^.]+$/, '')
+
     return getThumbnails(key).then(r => {
       this.thumbnails = r
     })

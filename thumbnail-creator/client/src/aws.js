@@ -2,6 +2,7 @@ import {config, S3} from 'aws-sdk'
 import {aws} from 'config'
 import {map} from 'lodash'
 
+// Remember to add the name of your thumbnail bucket to the config file
 const {region, accessKeyId, secretAccessKey, uploadBucket, thumbnailBucket} = aws
 
 config.update({
@@ -21,6 +22,7 @@ export const s3UploadBucket = new S3({
   }
 })
 
+// We create a new S3 object for the thumbnail bucket.
 export const s3ThumbnailBucket = new S3({
   apiVersion: '2006-03-01',
   params: {
@@ -39,16 +41,14 @@ export const uploadFiles = files => {
   )
 }
 
-export const getUpload = key => {
-  console.log(key)
-}
-
 export const getUploads = () => {
   return s3UploadBucket.listObjects().promise().then(r => {
     return r.Contents
   })
 }
 
+// We use the Prefix option with a value of the key argument. The key
+// is the name of the uploaded file without the file extension.
 export const getThumbnails = (key) => {
   return s3ThumbnailBucket.listObjects({
     Prefix: key

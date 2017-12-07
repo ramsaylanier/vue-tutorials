@@ -14,7 +14,6 @@
         </li>  
       </ul>
 
-
       <input v-if="files.length > 0" type="submit" value="Upload" :class="$style.submit"/>
 
       {{message}}
@@ -27,6 +26,7 @@
 import {uploadFiles} from '@/aws.js'
 export default {
   name: 'upload-form',
+  props: ['setUploadStatus'],
   data () {
     return {
       files: [],
@@ -39,10 +39,11 @@ export default {
       this.message = null
     },
     handleSubmit (e) {
+      this.setUploadStatus(true)
       uploadFiles(this.files).then(r => {
-        console.log('result:', r)
         this.files = []
         this.message = 'Uploaded!'
+        this.setUploadStatus(false)
       })
     }
   }

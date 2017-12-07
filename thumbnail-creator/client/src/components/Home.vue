@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.container">
-    <upload-form/>
-    <list/>
+    <upload-form :setUploadStatus="setUploadStatus"/>
+    <list :isUploading="isUploading"/>
   </div>
 </template>
 
@@ -11,6 +11,16 @@ import List from '@/components/list.vue'
 
 export default {
   name: 'Home',
+  data () {
+    return {
+      isUploading: false
+    }
+  },
+  methods: {
+    setUploadStatus (isUploading) {
+      this.isUploading = isUploading
+    }
+  },
   components: {
     UploadForm, List
   }

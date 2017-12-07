@@ -19,6 +19,19 @@ functions:
 
 resources:
   Resources:
+    UploadBucketS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebAppS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadPutObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:PutObject
+              Resource: arn:aws:s3:::${self:custom.uploadBucket}/*
     ThumbnailsS3Bucket:
       Type: AWS::S3::Bucket
       Properties:

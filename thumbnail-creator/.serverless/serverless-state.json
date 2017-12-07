@@ -106,7 +106,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/thumbnail-creator/dev/1512413841299-2017-12-04T18:57:21.299Z/thumbnail-creator.zip"
+                "S3Key": "serverless/thumbnail-creator/dev/1512593649328-2017-12-06T20:54:09.328Z/thumbnail-creator.zip"
               },
               "FunctionName": "thumbnail-creator-dev-transform",
               "Handler": "handlers/transform.transform",
@@ -125,14 +125,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "TransformLambdaVersionO5l5pRgHkfE8FJPYwZUrEbeJFv62nbsChbdU4KhBNU": {
+          "TransformLambdaVersion2XxHOMxHgXxlUWoKKXdFVP5h1BDpChYz9ZhQFPPZQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "TransformLambdaFunction"
               },
-              "CodeSha256": "O5l5pR/gHkfE8FJPYwZUrEbeJFv62nbsChbdU4KhBNU="
+              "CodeSha256": "2XxHO+MxHgXx/lUWoKKXdFVP5h1BDpChYz9ZhQFPPZQ="
             }
           },
           "S3BucketThumbnailcreatortutorialuploads": {
@@ -174,6 +174,27 @@
                   [
                     "arn:aws:s3:::thumbnail-creator-tutorial-uploads"
                   ]
+                ]
+              }
+            }
+          },
+          "UploadBucketS3BucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+              "Bucket": {
+                "Ref": "WebAppS3Bucket"
+              },
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Sid": "PublicReadPutObject",
+                    "Effect": "Allow",
+                    "Principal": "*",
+                    "Action": [
+                      "s3:PutObject"
+                    ],
+                    "Resource": "arn:aws:s3:::thumbnail-creator-tutorial-uploads/*"
+                  }
                 ]
               }
             }
@@ -226,7 +247,7 @@
           "TransformLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "TransformLambdaVersionO5l5pRgHkfE8FJPYwZUrEbeJFv62nbsChbdU4KhBNU"
+              "Ref": "TransformLambdaVersion2XxHOMxHgXxlUWoKKXdFVP5h1BDpChYz9ZhQFPPZQ"
             }
           }
         }
@@ -272,6 +293,27 @@
     },
     "resources": {
       "Resources": {
+        "UploadBucketS3BucketPolicy": {
+          "Type": "AWS::S3::BucketPolicy",
+          "Properties": {
+            "Bucket": {
+              "Ref": "WebAppS3Bucket"
+            },
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Sid": "PublicReadPutObject",
+                  "Effect": "Allow",
+                  "Principal": "*",
+                  "Action": [
+                    "s3:PutObject"
+                  ],
+                  "Resource": "arn:aws:s3:::thumbnail-creator-tutorial-uploads/*"
+                }
+              ]
+            }
+          }
+        },
         "ThumbnailsS3Bucket": {
           "Type": "AWS::S3::Bucket",
           "Properties": {
@@ -316,7 +358,7 @@
     "artifact": "/Users/rlanier/Projects/vue-tutorials/thumbnail-creator/.serverless/thumbnail-creator.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/thumbnail-creator/dev/1512413841299-2017-12-04T18:57:21.299Z",
+    "artifactDirectoryName": "serverless/thumbnail-creator/dev/1512593649328-2017-12-06T20:54:09.328Z",
     "artifact": "thumbnail-creator.zip"
   }
 }

@@ -18,6 +18,7 @@ import {aws} from 'config'
 
 export default {
   name: 'list',
+  props: ['isUploading'],
   data () {
     return {
       uploads: [],
@@ -25,12 +26,22 @@ export default {
     }
   },
   mounted () {
-    return getUploads().then(r => {
-      this.uploads = r
-    })
+    this.getItems()
+  },
+  watch: {
+    isUploading (uploading) {
+      if (!uploading) {
+        this.getItems()
+      }
+    }
   },
   methods: {
-    sanitizeKey: (key) => {
+    getItems: function () {
+      return getUploads().then(r => {
+        this.uploads = r
+      })
+    },
+    sanitizeKey: function (key) {
       return key.replace(/ /g, '+')
     }
   }

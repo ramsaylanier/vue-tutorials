@@ -1,10 +1,5 @@
 **/config/development.json
 **/config/production.json
-<<<<<<< HEAD
 **/config/client.json
 **/dist
 node_modules
-=======
-node_modules
-**/config/client.json
->>>>>>> thumbnail-create-part4

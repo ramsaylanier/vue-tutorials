@@ -1,0 +1,240 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket"
+    },
+    "TransformLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/thumbnail-creator-dev-transform"
+      }
+    },
+    "IamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "thumbnail-creator",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/thumbnail-creator-dev-transform:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/thumbnail-creator-dev-transform:*:*"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "thumbnail-creator",
+              "dev",
+              "us-east-1",
+              "lambdaRole"
+            ]
+          ]
+        }
+      }
+    },
+    "TransformLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/thumbnail-creator/dev/1512593649328-2017-12-06T20:54:09.328Z/thumbnail-creator.zip"
+        },
+        "FunctionName": "thumbnail-creator-dev-transform",
+        "Handler": "handlers/transform.transform",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs6.10",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "TransformLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "TransformLambdaVersion2XxHOMxHgXxlUWoKKXdFVP5h1BDpChYz9ZhQFPPZQ": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "TransformLambdaFunction"
+        },
+        "CodeSha256": "2XxHO+MxHgXx/lUWoKKXdFVP5h1BDpChYz9ZhQFPPZQ="
+      }
+    },
+    "S3BucketThumbnailcreatortutorialuploads": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "thumbnail-creator-tutorial-uploads",
+        "NotificationConfiguration": {
+          "LambdaConfigurations": [
+            {
+              "Event": "s3:ObjectCreated:*",
+              "Function": {
+                "Fn::GetAtt": [
+                  "TransformLambdaFunction",
+                  "Arn"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "TransformLambdaPermissionThumbnailcreatortutorialuploadsS3"
+      ]
+    },
+    "TransformLambdaPermissionThumbnailcreatortutorialuploadsS3": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "TransformLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "s3.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:s3:::thumbnail-creator-tutorial-uploads"
+            ]
+          ]
+        }
+      }
+    },
+    "UploadBucketS3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "WebAppS3Bucket"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Sid": "PublicReadPutObject",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": [
+                "s3:PutObject"
+              ],
+              "Resource": "arn:aws:s3:::thumbnail-creator-tutorial-uploads/*"
+            }
+          ]
+        }
+      }
+    },
+    "ThumbnailsS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "thumbnail-creator-tutorial-thumbnails"
+      }
+    },
+    "WebAppS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "thumbnail-creator-tutorial",
+        "AccessControl": "PublicRead",
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html",
+          "ErrorDocument": "index.html"
+        }
+      }
+    },
+    "WebAppS3BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "WebAppS3Bucket"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Sid": "PublicReadGetObject",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": [
+                "s3:GetObject"
+              ],
+              "Resource": "arn:aws:s3:::thumbnail-creator-tutorial/*"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": {
+        "Ref": "ServerlessDeploymentBucket"
+      }
+    },
+    "TransformLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "TransformLambdaVersion2XxHOMxHgXxlUWoKKXdFVP5h1BDpChYz9ZhQFPPZQ"
+      }
+    }
+  }
+}

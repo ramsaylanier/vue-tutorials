@@ -1,0 +1,14 @@
+{ 
+  "Records": [ 
+    { 
+      "s3": {
+        "bucket":{  
+           "name":"thumbnail-creator-tutorial-uploads"
+        },
+        "object":{  
+           "key":"Screen Shot 2017-11-30 at 10.27.47 AM.png"
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
-# sidebar
+# Dynamic Content Sidebar
 
-> A Vue.js project
+[Read the Medium tutorial first!](https://medium.com/@rmmmsy/creating-a-sidebar-with-dynamic-content-using-vue-and-vuex-88e904894e00)
 
 ## Build Setup
 

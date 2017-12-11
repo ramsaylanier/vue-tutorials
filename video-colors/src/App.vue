@@ -3,12 +3,12 @@
     <video :class="$style.video" src="./assets/test.mp4" autoplay loop controls ref="video" id="video"/>
     <canvas :class="$style.canvas" ref="canvas" hidden></canvas>
 
-    <histogram v-if="videoLoaded" :frame="frame" :color="averageColor"/>
+    <chart v-if="videoLoaded" :frame="frame" :color="averageColor"/>
   </div>
 </template>
 
 <script>
-import Histogram from './histogram.vue'
+import Chart from './chart.vue'
 import MyWorker from './worker.js'
 const FPS = 25
 const INTERVAL = 1000 / (FPS / 3)
@@ -80,7 +80,7 @@ export default {
     }
   },
   components: {
-    Histogram
+    Chart
   }
 }
 </script>

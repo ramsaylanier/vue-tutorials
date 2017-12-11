@@ -21,7 +21,7 @@ let xAxis = null
 let yAxis = null
 
 export default {
-  name: 'histogram',
+  name: 'chart',
   props: ['frame', 'color'],
   data () {
     return {
@@ -31,7 +31,7 @@ export default {
   },
   mounted: function () {
     this.setupChart()
-    window.requestAnimationFrame(this.getCurrentTime)
+    this.getCurrentTime()
   },
   watch: {
     frame () {
@@ -53,7 +53,6 @@ export default {
       let frame = this.frame
       let color = this.color
       const svg = select('#svg')
-      const vid = document.getElementById('video')
 
       map(color, (c, k) => {
         svg
@@ -61,7 +60,7 @@ export default {
           .attr('r', 1)
           .attr('cx', xAxis(frame))
           .attr('cy', yAxis(c))
-          .attr('fill', g => {
+          .attr('fill', () => {
             const n = rgb()
             n[k] = c
             return n

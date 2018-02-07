@@ -1,0 +1,7 @@
+@import "./_colors.scss";
+
+.page{
+  background-image: $page-gradient;
+  min-height: 100vh;
+  padding: 1rem;
+}

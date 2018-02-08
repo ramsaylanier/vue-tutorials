@@ -8,7 +8,6 @@ import RuleSingle from '@/components/pages/game/rule/Single.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
   routes: [
     {
       path: '/',
